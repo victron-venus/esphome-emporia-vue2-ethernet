@@ -1,0 +1,74 @@
+# HOME ASSISTANT PACKAGE, not ESPHome firmware.
+# Replace sensor.vue2_circuit_01_power and sensor.vue2_net_power with actual
+# ESPHome entities in W. The circuit must be a consumption-only measurement.
+# The net source must measure the grid boundary with positive import and
+# negative export. Delete both directional templates and their integration
+# sensors if that measurement does not exist.
+# Validate the configuration in Home Assistant before use.
+
+template:
+  - sensor:
+      - name: Vue 2 Grid Import Power
+        unique_id: vue2_grid_import_power
+        default_entity_id: sensor.vue2_grid_import_power
+        device_class: power
+        state_class: measurement
+        unit_of_measurement: W
+        availability: >-
+          {{ is_number(states('sensor.vue2_net_power'))
+             and state_attr('sensor.vue2_net_power', 'unit_of_measurement') == 'W' }}
+        state: >-
+          {% set raw = states('sensor.vue2_net_power') %}
+          {% if is_number(raw) %}
+            {{ [raw | float, 0] | max }}
+          {% else %}
+            {{ none }}
+          {% endif %}
+      - name: Vue 2 Grid Export Power
+        unique_id: vue2_grid_export_power
+        default_entity_id: sensor.vue2_grid_export_power
+        device_class: power
+        state_class: measurement
+        unit_of_measurement: W
+        availability: >-
+          {{ is_number(states('sensor.vue2_net_power'))
+             and state_attr('sensor.vue2_net_power', 'unit_of_measurement') == 'W' }}
+        state: >-
+          {% set raw = states('sensor.vue2_net_power') %}
+          {% if is_number(raw) %}
+            {{ [-(raw | float), 0] | max }}
+          {% else %}
+            {{ none }}
+          {% endif %}
+
+sensor:
+  - platform: integration
+    source: sensor.vue2_circuit_01_power
+    name: Vue 2 Circuit 01 Energy
+    unique_id: vue2_circuit_01_energy
+    unit_prefix: k
+    unit_time: h
+    method: left
+    round: 4
+    max_sub_interval:
+      minutes: 1
+  - platform: integration
+    source: sensor.vue2_grid_import_power
+    name: Vue 2 Grid Import Energy
+    unique_id: vue2_grid_import_energy
+    unit_prefix: k
+    unit_time: h
+    method: left
+    round: 4
+    max_sub_interval:
+      minutes: 1
+  - platform: integration
+    source: sensor.vue2_grid_export_power
+    name: Vue 2 Grid Export Energy
+    unique_id: vue2_grid_export_energy
+    unit_prefix: k
+    unit_time: h
+    method: left
+    round: 4
+    max_sub_interval:
+      minutes: 1

@@ -1,0 +1,25 @@
+{
+  "source": "home_assistant",
+  "ha_url": "ws://home-assistant.local:8123/api/websocket",
+  "ha_token": "REPLACE_WITH_HOME_ASSISTANT_LONG_LIVED_ACCESS_TOKEN",
+  "ha_stale_after_seconds": 30,
+  "ha_request_timeout_seconds": 10,
+  "channels": [
+    {
+      "id": "vue2_circuit_01",
+      "ha_entity_id": "sensor.vue2_circuit_01_power",
+      "service_name": "com.victronenergy.acload.vue2_circuit_01",
+      "instance": 71,
+      "custom_name": "Vue 2 Circuit 01",
+      "position": 0
+    },
+    {
+      "id": "vue2_circuit_02",
+      "ha_entity_id": "sensor.vue2_circuit_02_power",
+      "service_name": "com.victronenergy.acload.vue2_circuit_02",
+      "instance": 72,
+      "custom_name": "Vue 2 Circuit 02",
+      "position": 0
+    }
+  ]
+}

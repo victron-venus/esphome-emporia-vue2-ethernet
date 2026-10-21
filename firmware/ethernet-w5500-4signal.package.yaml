@@ -1,0 +1,30 @@
+# Experimental Emporia Vue 2 transport: FOUR SPI SIGNALS, not four total wires.
+# Power and ground connections are additional. Not a verified wiring map.
+# REQUIRES an independently verified W5500 reset supervisor / power-on-reset
+# circuit meeting the datasheet timing and power-sequencing requirements.
+# Floating RESET, an assumed pull-up, or a successful build is NOT verification.
+# Recovery after ESP32-only resets and W5500 power cycles must be tested.
+# Use the package with reset_pin if this hardware condition is not established.
+# Preserve stock SAMD09 firmware and I2C GPIO21/22. Do not configure wifi:.
+substitutions:
+  eth_clk_pin: GPIO_TBD_CLK
+  eth_miso_pin: GPIO_TBD_MISO
+  eth_mosi_pin: GPIO_TBD_MOSI
+  eth_cs_pin: GPIO_TBD_CS
+
+ethernet:
+  type: W5500
+  clk_pin: ${eth_clk_pin}
+  miso_pin: ${eth_miso_pin}
+  mosi_pin: ${eth_mosi_pin}
+  cs_pin: ${eth_cs_pin}
+  interface: spi3
+  clock_speed: 8MHz
+  polling_interval: 10ms
+  # No interrupt_pin: requires ESP-IDF >= 5.1.4.
+  # No reset_pin: the independently verified hardware reset circuit is mandatory.
+
+text_sensor:
+  - platform: ethernet_info
+    ip_address:
+      name: Ethernet IP Address

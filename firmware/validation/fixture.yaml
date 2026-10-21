@@ -1,0 +1,17 @@
+# NEVER FLASH. Compiler-only fixture; not an approved wiring map.
+# GPIO23 is normally connected to the Vue 2 status LED. Physical circuit
+# assessment/isolation is mandatory before reuse. The LED is omitted here.
+substitutions:
+  eth_clk_pin: GPIO18
+  eth_miso_pin: GPIO19
+  eth_mosi_pin: GPIO25
+  eth_cs_pin: GPIO33
+  eth_reset_pin: GPIO23
+
+packages:
+  common: !include fixture-common.yaml
+  ethernet_transport: !include ../ethernet-w5500.package.yaml
+
+esphome:
+  name: vue2-w5500-compile-only
+  friendly_name: NEVER DEPLOY - Compilation Fixture

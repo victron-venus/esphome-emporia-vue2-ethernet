@@ -1,0 +1,16 @@
+# NEVER FLASH. Compiler-only fixture; not an approved wiring map.
+# Requires a separately verified W5500 hardware supervisor/POR circuit.
+# Validation or code generation does not establish that hardware condition.
+substitutions:
+  eth_clk_pin: GPIO18
+  eth_miso_pin: GPIO19
+  eth_mosi_pin: GPIO25
+  eth_cs_pin: GPIO33
+
+packages:
+  common: !include fixture-common.yaml
+  ethernet_transport: !include ../ethernet-w5500-4signal.package.yaml
+
+esphome:
+  name: vue2-w5500-four-signals-test
+  friendly_name: NEVER DEPLOY - Compilation Fixture

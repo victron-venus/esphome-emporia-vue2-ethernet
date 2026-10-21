@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="920" viewBox="0 0 1200 920" role="img" aria-labelledby="title desc">
+  <title id="title">Candidate Ethernet pin allocation for an Emporia Vue 2</title>
+  <desc id="desc">Proposed, physically unverified connections from ESP32 GPIO18 to W5500 SCLK, GPIO19 from MISO, GPIO25 to MOSI, GPIO33 to chip select, and GPIO23 to reset after the existing LED circuit is assessed. The established measurement bus on GPIO21 and GPIO22 remains unchanged. Power, isolation, exact solder pads, and every candidate GPIO need physical verification. This diagram is not a tested wiring guide.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"/></marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#047857"/></marker>
+  </defs>
+  <rect width="1200" height="920" fill="#f3f6fb"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="40" y="58" font-size="31" font-weight="700" fill="#10233f">Candidate Ethernet pin map</text>
+    <rect x="820" y="30" width="340" height="38" rx="19" fill="#fff1db" stroke="#f2cf94"/>
+    <text x="990" y="54" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">PROPOSED · NOT A WIRING GUIDE</text>
+    <text x="40" y="95" font-size="18" fill="#52627a">Preserve I2C metering. Verify every new connection on the actual board.</text>
+
+    <rect x="40" y="135" width="310" height="476" rx="20" fill="#ffffff" stroke="#ccd7e6" stroke-width="2"/>
+    <rect x="850" y="135" width="310" height="476" rx="20" fill="#ffffff" stroke="#ccd7e6" stroke-width="2"/>
+    <text x="66" y="174" font-size="23" font-weight="700" fill="#10233f">Vue 2 · ESP32</text>
+    <text x="66" y="198" font-size="14" fill="#65758b">GPIO numbers, not pad numbers</text>
+    <text x="876" y="174" font-size="23" font-weight="700" fill="#10233f">W5500 module</text>
+    <text x="876" y="198" font-size="14" fill="#65758b">With clock, magnetics and RJ45</text>
+    <text x="600" y="163" text-anchor="middle" font-size="14" font-weight="700" fill="#2563eb">DEDICATED SPI · CANDIDATE SIGNALS</text>
+
+    <g fill="#edf4ff" stroke="#c9dcff">
+      <rect x="66" y="218" width="258" height="48" rx="10"/>
+      <rect x="66" y="278" width="258" height="48" rx="10"/>
+      <rect x="66" y="338" width="258" height="48" rx="10"/>
+      <rect x="66" y="398" width="258" height="48" rx="10"/>
+      <rect x="876" y="218" width="258" height="48" rx="10"/>
+      <rect x="876" y="278" width="258" height="48" rx="10"/>
+      <rect x="876" y="338" width="258" height="48" rx="10"/>
+      <rect x="876" y="398" width="258" height="48" rx="10"/>
+    </g>
+    <g font-size="20" font-weight="700" fill="#1e40af">
+      <text x="86" y="249">GPIO18</text><text x="896" y="249">SCLK</text>
+      <text x="86" y="309">GPIO19</text><text x="896" y="309">MISO</text>
+      <text x="86" y="369">GPIO25</text><text x="896" y="369">MOSI</text>
+      <text x="86" y="429">GPIO33</text><text x="896" y="429">SCSn</text>
+    </g>
+    <g stroke="#2563eb" stroke-width="3" stroke-dasharray="9 6" fill="none">
+      <path d="M 350 242 H 848" marker-end="url(#arrow-blue)"/>
+      <path d="M 850 302 H 352" marker-end="url(#arrow-blue)"/>
+      <path d="M 350 362 H 848" marker-end="url(#arrow-blue)"/>
+      <path d="M 350 422 H 848" marker-end="url(#arrow-blue)"/>
+    </g>
+    <g text-anchor="middle" font-size="14" fill="#365984">
+      <text x="600" y="230">Clock · start at 8 MHz</text>
+      <text x="600" y="290">Data from Ethernet controller</text>
+      <text x="600" y="350">Data to Ethernet controller</text>
+      <text x="600" y="410">Chip select · verify inactive HIGH</text>
+    </g>
+
+    <rect x="66" y="458" width="258" height="48" rx="10" fill="#fff4e5" stroke="#efc792"/>
+    <rect x="876" y="458" width="258" height="48" rx="10" fill="#fff4e5" stroke="#efc792"/>
+    <text x="86" y="489" font-size="20" font-weight="700" fill="#92400e">GPIO23</text>
+    <text x="896" y="489" font-size="20" font-weight="700" fill="#92400e">RSTn</text>
+    <path d="M 350 482 H 848" stroke="#b45309" stroke-width="3" stroke-dasharray="9 6" fill="none" marker-end="url(#arrow-amber)"/>
+    <text x="600" y="470" text-anchor="middle" font-size="14" fill="#92400e">Conditional reuse · active-LOW reset</text>
+    <text x="66" y="537" font-size="14" font-weight="700" fill="#92400e">Reclaim the status LED output</text>
+    <text x="66" y="560" font-size="13" fill="#65758b">Remove firmware use; trace and assess</text>
+    <text x="66" y="580" font-size="13" fill="#65758b">the physical LED load before connecting.</text>
+    <text x="876" y="537" font-size="14" font-weight="700" fill="#10233f">INTn omitted · polling every 10 ms</text>
+    <text x="876" y="560" font-size="13" fill="#65758b">Reset timing needs correction/review.</text>
+    <text x="876" y="580" font-size="13" fill="#65758b">Test recovery without a power cycle.</text>
+
+    <rect x="383" y="532" width="434" height="66" rx="12" fill="#e8edf5"/>
+    <text x="600" y="558" text-anchor="middle" font-size="14" font-weight="700" fill="#364b68">No verified solder-point map yet</text>
+    <text x="600" y="580" text-anchor="middle" font-size="13" fill="#52627a">Dashed connections require board-level checks.</text>
+
+    <rect x="40" y="635" width="545" height="145" rx="18" fill="#e9f7f1" stroke="#a4d8c4"/>
+    <text x="64" y="671" font-size="19" font-weight="700" fill="#065f46">Preserve the established metering bus</text>
+    <text x="64" y="704" font-size="17" font-weight="700" fill="#047857">GPIO21 · SDA</text>
+    <text x="64" y="731" font-size="17" font-weight="700" fill="#047857">GPIO22 · SCL</text>
+    <path d="M 245 714 H 302" stroke="#047857" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+    <text x="318" y="704" font-size="17" font-weight="700" fill="#065f46">Stock SAMD09</text>
+    <text x="318" y="730" font-size="14" fill="#326c5b">Keep its firmware unchanged</text>
+    <text x="64" y="758" font-size="13" fill="#326c5b">Do not repurpose GPIO26; it may control measurement reset.</text>
+
+    <rect x="615" y="635" width="545" height="145" rx="18" fill="#fff0ed" stroke="#efbbb3"/>
+    <text x="639" y="671" font-size="19" font-weight="700" fill="#a33328">Power and isolation remain unverified</text>
+    <text x="639" y="702" font-size="15" fill="#824c45">3.3 V supply capacity, startup and thermal headroom</text>
+    <text x="639" y="729" font-size="15" fill="#824c45">Isolation barrier, RJ45 shield, clearance and mounting</text>
+    <text x="639" y="756" font-size="13" font-weight="700" fill="#a33328">Power wiring is intentionally absent from this candidate map.</text>
+
+    <g font-size="13" fill="#52627a">
+      <path d="M 48 824 H 88" stroke="#047857" stroke-width="3"/>
+      <text x="101" y="829">Established metering bus</text>
+      <path d="M 344 824 H 384" stroke="#2563eb" stroke-width="3" stroke-dasharray="9 6"/>
+      <text x="397" y="829">Candidate SPI pins</text>
+      <path d="M 607 824 H 647" stroke="#b45309" stroke-width="3" stroke-dasharray="9 6"/>
+      <text x="660" y="829">Conditional LED reuse</text>
+      <rect x="895" y="815" width="18" height="18" rx="4" fill="#fff0ed" stroke="#dc7567"/>
+      <text x="927" y="829">Unverified power</text>
+    </g>
+    <text x="40" y="880" font-size="14" fill="#65758b">Disabling integrated Wi-Fi does not free an external GPIO bus. Reusing GPIO23 is a separate LED-circuit modification.</text>
+  </g>
+</svg>

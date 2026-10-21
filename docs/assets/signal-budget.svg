@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="460" viewBox="0 0 1280 460" role="img" aria-labelledby="title desc">
+  <title id="title">W5500 signal budget: five GPIOs with controlled reset, four with independent reset hardware</title>
+  <desc id="desc">A horizontal stacked bar chart counts four SPI signals in both designs and one reset signal in the preferred design. Polling removes the interrupt pin. Power and ground are excluded from the count. The four-signal design requires a validated independent reset circuit.</desc>
+  <defs><style>text{font-family:DejaVu Sans,Arial,sans-serif}.title{font-size:30px;font-weight:700;fill:#0f172a}.body{font-size:18px;fill:#334155}.label{font-size:16px;font-weight:700;fill:#0f172a}.small{font-size:15px;fill:#475569}</style></defs>
+  <rect width="1280" height="460" rx="24" fill="#f0f7fc"/>
+  <text x="40" y="52" class="title">A small GPIO budget, with an explicit reset tradeoff</text>
+  <text x="40" y="85" class="body">MCU signal lines only · Power and ground are additional connections</text>
+  <g stroke="#cbd5e1"><path d="M390 125 V324 M525 125 V324 M660 125 V324 M795 125 V324 M930 125 V324 M1065 125 V324"/></g>
+  <g class="small" text-anchor="middle"><text x="390" y="348">0</text><text x="525" y="348">1</text><text x="660" y="348">2</text><text x="795" y="348">3</text><text x="930" y="348">4</text><text x="1065" y="348">5</text></g>
+  <text x="40" y="180" class="label">MCU-controlled reset</text><text x="40" y="209" class="small">Preferred design; waveform must be checked</text>
+  <rect x="390" y="153" width="540" height="68" rx="7" fill="#0f766e"/><rect x="930" y="153" width="135" height="68" rx="7" fill="#b45309"/>
+  <text x="660" y="194" font-size="18" font-weight="700" text-anchor="middle" fill="#ffffff">SCK · MISO · MOSI · CS</text><text x="997" y="194" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">RESET</text><text x="1085" y="194" class="label">5 GPIOs</text>
+  <text x="40" y="280" class="label">Independent reset hardware</text><text x="40" y="309" class="small">Conditional alternative; recovery must be checked</text>
+  <rect x="390" y="253" width="540" height="68" rx="7" fill="#0f766e"/>
+  <text x="660" y="294" font-size="18" font-weight="700" text-anchor="middle" fill="#ffffff">SCK · MISO · MOSI · CS</text><text x="950" y="294" class="label">4 GPIOs</text>
+  <rect x="40" y="378" width="1200" height="54" rx="12" fill="#dbeafe"/>
+  <text x="60" y="411" class="body">Polling replaces INT. Turning off the integrated Wi-Fi radio does not free external GPIOs.</text>
+</svg>

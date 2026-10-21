@@ -1,0 +1,32 @@
+# Local device credentials and configuration
+secrets.yaml
+secrets.yml
+*.local.yaml
+*.local.yml
+*.local.json
+config.json
+.env
+.env.*
+
+# Firmware builds and private backups
+.esphome/
+.pioenvs/
+.piolibdeps/
+*.bin
+*.elf
+*.map
+*.log
+backups/
+
+# Tool caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# Infrastructure state and saved plans never belong in this project
+.terraform/
+*.tfstate*
+*.tfplan
+*.tfvars

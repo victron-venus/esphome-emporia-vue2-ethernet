@@ -1,0 +1,28 @@
+# Experimental Emporia Vue 2 Ethernet transport. Not a verified wiring map.
+# Resolve every GPIO against the actual PCB before building device firmware.
+# Preserve the stock SAMD09 firmware and its I2C connection on GPIO21/22.
+# Use this package without wifi: or Wi-Fi-dependent components.
+substitutions:
+  eth_clk_pin: GPIO_TBD_CLK
+  eth_miso_pin: GPIO_TBD_MISO
+  eth_mosi_pin: GPIO_TBD_MOSI
+  eth_cs_pin: GPIO_TBD_CS
+  eth_reset_pin: GPIO_TBD_RESET
+
+ethernet:
+  type: W5500
+  clk_pin: ${eth_clk_pin}
+  miso_pin: ${eth_miso_pin}
+  mosi_pin: ${eth_mosi_pin}
+  cs_pin: ${eth_cs_pin}
+  reset_pin: ${eth_reset_pin}
+  interface: spi3
+  clock_speed: 8MHz
+  polling_interval: 10ms
+  # Polling avoids an interrupt GPIO and requires ESP-IDF >= 5.1.4.
+  # Do not add interrupt_pin while polling_interval is configured.
+
+text_sensor:
+  - platform: ethernet_info
+    ip_address:
+      name: Ethernet IP Address
