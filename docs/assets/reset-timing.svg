@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
   <title id="title">W5500 reset pulse: driver request compared with datasheet minimum</title>
-  <desc id="desc">A zero-based bar chart compares the 100-microsecond delay requested while RSTn is low in the ESP-IDF 5.5.6 W5500 driver with the W5500 datasheet minimum low pulse of 500 microseconds. The required minimum is five times the requested delay. These values come from code and documentation, not a measured waveform. Reset timing remains unresolved and no implemented workaround is claimed.</desc>
+  <desc id="desc">A zero-based bar chart compares the 100-microsecond delay requested while RSTn is low in the ESP-IDF 5.5.6 W5500 driver with the W5500 datasheet minimum low pulse of 500 microseconds. The required minimum is five times the requested delay. These values come from code and documentation, not a measured waveform or proof every module fails. This version has a source-level timing gap and no implemented workaround is claimed.</desc>
   <rect width="1200" height="520" fill="#f3f6fb"/>
   <g font-family="Arial, Helvetica, sans-serif">
     <text x="40" y="55" font-size="30" font-weight="700" fill="#10233f">W5500 reset pulse timing</text>
@@ -40,7 +40,7 @@
     </g>
 
     <rect x="40" y="430" width="1120" height="49" rx="12" fill="#fff3e2" stroke="#f2cf94"/>
-    <text x="59" y="461" font-size="17" font-weight="700" fill="#92400e">The 500 µs minimum is 5× the driver's requested delay. Reset timing remains unresolved.</text>
-    <text x="40" y="503" font-size="13" fill="#65758b">Not a waveform. GPIO overhead is not measured here; reset release-to-SPI settling also requires verification.</text>
+    <text x="59" y="461" font-size="17" font-weight="700" fill="#92400e">Source-level timing gap: 500 µs minimum versus 100 µs requested in the version shown.</text>
+    <text x="40" y="503" font-size="13" fill="#65758b">Not a measured failure rate. Actual pulse width and reset release-to-SPI settling still require verification.</text>
   </g>
 </svg>

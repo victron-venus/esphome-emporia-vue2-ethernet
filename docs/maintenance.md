@@ -8,14 +8,22 @@ Documentation, diagrams and examples are versioned here with Git. Terraform stat
 
 ## Documentation and example checks
 
+Use Python 3.12 in an isolated environment for the checked toolchain.
+
 ```sh
 python3 -m pip install -r requirements-checks.txt
 python3 scripts/check.py
+python3 -m unittest discover -s tests -v
+python3 -m unittest discover -s examples/tests -v
 ```
 
-The checks parse JSON and YAML, validate local Markdown links and SVG documents, and reject obvious private configuration artifacts. They do not contact a device, upload firmware, or establish hardware safety.
+Run these commands from a Git checkout. The source check reads tracked files and new nonignored files, so ignored local secrets and generated build trees are not traversed. A private artifact forcibly added to Git still fails validation.
 
-The GitHub Actions workflow runs the same checks with read-only repository permissions. Use the commands in [the firmware guide](../firmware/README.md) for ESPHome schema and build validation. Real board and end-to-end tests are tracked separately in [Verification](verification.md).
+The checks reject duplicate YAML/JSON keys, non-finite JSON numbers, cyclic YAML aliases, symbolic links, and broken local Markdown targets and heading anchors. SVG checks cover explicit scripts and event attributes, external hrefs and ordinary CSS URL references, missing fragment IDs, and basic geometry/accessibility metadata. They do not implement a complete SVG/CSS security model. YAML includes and secrets remain inert. Markdown examples inside code fences are not followed as links. This is a repository source check, not a general-purpose sanitizer or a complete secret scanner.
+
+Regression tests exercise these publication failures and render the actual Home Assistant templates with zero, invalid, stale, future-dated and wrong-unit readings. They do not run Home Assistant itself or prove the behavior of its energy integrator.
+
+The GitHub Actions workflow runs the same checks with read-only repository permissions. A separate job installs pinned ESPHome and checks both synthetic configurations, generated C++, invalid pin rejection and substitution precedence in temporary directories with throwaway credentials. CI does not upload firmware or connect to devices. Use the commands in [the firmware guide](../firmware/README.md) for full compilation. Real board and end-to-end tests are tracked separately in [Verification](verification.md).
 
 ## Diagrams
 

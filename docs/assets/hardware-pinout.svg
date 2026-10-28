@@ -78,7 +78,7 @@
 
     <rect x="615" y="635" width="545" height="145" rx="18" fill="#fff0ed" stroke="#efbbb3"/>
     <text x="639" y="671" font-size="19" font-weight="700" fill="#a33328">Power and isolation remain unverified</text>
-    <text x="639" y="702" font-size="15" fill="#824c45">3.3 V supply capacity, startup and thermal headroom</text>
+    <text x="639" y="702" font-size="15" fill="#824c45">Supply voltage, power order and thermal headroom</text>
     <text x="639" y="729" font-size="15" fill="#824c45">Isolation barrier, RJ45 shield, clearance and mounting</text>
     <text x="639" y="756" font-size="13" font-weight="700" fill="#a33328">Power wiring is intentionally absent from this candidate map.</text>
 
@@ -92,6 +92,7 @@
       <rect x="895" y="815" width="18" height="18" rx="4" fill="#fff0ed" stroke="#dc7567"/>
       <text x="927" y="829">Unverified power</text>
     </g>
-    <text x="40" y="880" font-size="14" fill="#65758b">Disabling integrated Wi-Fi does not free an external GPIO bus. Reusing GPIO23 is a separate LED-circuit modification.</text>
+    <text x="40" y="873" font-size="14" fill="#65758b">Disabling Wi-Fi frees no external GPIO bus. Keep flash, boot-strapping and measurement pins reserved.</text>
+    <text x="40" y="899" font-size="14" fill="#65758b">Reusing GPIO23 is a separate LED-circuit change. Check signal levels when either device is unpowered.</text>
   </g>
 </svg>

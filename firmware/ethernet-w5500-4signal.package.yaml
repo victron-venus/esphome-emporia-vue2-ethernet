@@ -4,7 +4,8 @@
 # circuit meeting the datasheet timing and power-sequencing requirements.
 # Floating RESET, an assumed pull-up, or a successful build is NOT verification.
 # Recovery after ESP32-only resets and W5500 power cycles must be tested.
-# Use the package with reset_pin if this hardware condition is not established.
+# If this condition is not established, neither package is ready for hardware:
+# the reset_pin variant has its own unresolved driver timing constraint.
 # Preserve stock SAMD09 firmware and I2C GPIO21/22. Do not configure wifi:.
 substitutions:
   eth_clk_pin: GPIO_TBD_CLK
