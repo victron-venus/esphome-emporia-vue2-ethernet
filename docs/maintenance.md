@@ -11,7 +11,7 @@ Documentation, diagrams and examples are versioned here with Git. Terraform stat
 Use Python 3.12 in an isolated environment for the checked toolchain.
 
 ```sh
-python3 -m pip install -r requirements-checks.txt
+python3 -m pip install --require-hashes --only-binary :all: -c requirements-checks.txt -r requirements-checks.lock
 python3 scripts/check.py
 python3 -m unittest discover -s tests -v
 python3 -m unittest discover -s examples/tests -v
@@ -23,7 +23,11 @@ The checks reject duplicate YAML/JSON keys, non-finite JSON numbers, cyclic YAML
 
 Regression tests exercise these publication failures and render the actual Home Assistant templates with zero, invalid, stale, future-dated and wrong-unit readings. They do not run Home Assistant itself or prove the behavior of its energy integrator.
 
-The GitHub Actions workflow runs the same checks with read-only repository permissions. A separate job installs pinned ESPHome and checks both synthetic configurations, generated C++, invalid pin rejection and substitution precedence in temporary directories with throwaway credentials. CI does not upload firmware or connect to devices. Use the commands in [the firmware guide](../firmware/README.md) for full compilation. Real board and end-to-end tests are tracked separately in [Verification](verification.md).
+The GitHub Actions workflow runs the same checks with read-only repository permissions. Its Python dependencies are pinned with hashes and installed from wheels. The manifest also constrains versions during installation. Keep the locked package set aligned with the manifest; adding or removing manifest entries requires regenerating the lock. Regenerate the lock after any dependency change, including removals, with `uv pip compile requirements-checks.txt --python-version 3.12 --generate-hashes --only-binary :all: -o requirements-checks.lock`.
+
+A separate job uses the official ESPHome image pinned by its immutable digest and checks both synthetic configurations, generated C++, invalid pin rejection and substitution precedence in temporary directories with throwaway credentials. No pip installation occurs in that job: the pinned ESPHome dependency set includes packages without published wheels. The image currently supplies Python 3.14.6; local full compilation was also checked with Python 3.12. Keep the image version/digest, `firmware/requirements.txt` and the validator's expected version aligned when updating.
+
+CI does not upload firmware or connect to devices. Use the commands in [the firmware guide](../firmware/README.md) for full compilation. Real board and end-to-end tests are tracked separately in [Verification](verification.md).
 
 ## Diagrams
 

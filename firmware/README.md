@@ -88,7 +88,18 @@ python firmware/validate.py
 python firmware/validate.py --compile
 ```
 
-Python 3.12 is used by CI. The script refuses a different ESPHome version, copies only the required sources into a temporary directory, generates throwaway API/OTA credentials, and removes that directory afterward. The original files never receive credentials. Internet access is needed to install dependencies and retrieve the pinned measurement component and toolchain. Dependency versions transitively selected by the pinned ESPHome package are not a complete dependency lock.
+Python 3.12 was used for local full compilation. The script refuses a different ESPHome version, copies only the required sources into a temporary directory, generates throwaway API/OTA credentials, and removes that directory afterward. The original files never receive credentials. Internet access is needed to install dependencies and retrieve the pinned measurement component and toolchain. Dependency versions transitively selected by the local pip installation are not a complete dependency lock.
+
+CI instead uses the official ESPHome image pinned by digest, including its preinstalled Python dependencies. This avoids installing source distributions during a pull request job. The image supplies Python 3.14.6. To run the same validation image with a local Docker engine:
+
+```sh
+docker run --rm --entrypoint python3 \
+  -v "$PWD:/work:ro" -w /work \
+  ghcr.io/esphome/esphome:2026.10.0@sha256:1dff19a59070cdb523b76576cdc74d200f862d43c1407809088855920cf57145 \
+  firmware/validate.py
+```
+
+This mounts source read-only and exposes no device or service port. The measurement component and SDK still require network access and their declared pins; an image digest alone is not a claim of a fully offline or byte-identical firmware build.
 
 The default command validates both variants, verifies effective pin assignments and the pinned framework, generates C++, and exercises rejection of every unassigned GPIO. It also tests substitution precedence and known software pin collisions. `--compile` adds a full build of the five-signal variant only. Do not run ESPHome `upload` or `run` on either fixture. No fixture represents a complete deployment configuration or a verified wiring map.
 

@@ -29,13 +29,15 @@ class ParserTests(unittest.TestCase):
     def test_svg_references_and_nonstatic_content(self):
         checks.check_svg(SVG.format('<defs><marker id="arrow"/></defs><path marker-end="url(#arrow)"/>'))
         for content in ('<path marker-end="url(#missing)"/>', '<g id="same"/><g id="same"/>', '<g onload="unused"/>', '<image href="https://example.invalid/image.png"/>'):
+            text = SVG.format(content)
             with self.subTest(content=content), self.assertRaises(ValueError):
-                checks.check_svg(SVG.format(content))
+                checks.check_svg(text)
 
     def test_svg_geometry_and_accessibility(self):
         for box in ('0 0 0 10', '0 0 -1 10', '0 0 nan 10', '0 0 10'):
+            text = SVG.format('').replace('0 0 10 10', box)
             with self.subTest(box=box), self.assertRaises(ValueError):
-                checks.check_svg(SVG.format('').replace('0 0 10 10', box))
+                checks.check_svg(text)
         for text in (SVG.format('').replace('Diagram', ''), '<!DOCTYPE svg>' + SVG.format('')):
             with self.subTest(text=text), self.assertRaises(ValueError):
                 checks.check_svg(text)
