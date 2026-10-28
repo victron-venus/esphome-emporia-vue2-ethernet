@@ -5,9 +5,11 @@ substitutions:
 
 esp32:
   board: esp32dev
+  # Synthetic compiler capacity only: detect the real flash before deployment.
+  flash_size: 4MB
   framework:
     type: esp-idf
-    version: recommended
+    version: 5.5.6
 
 external_components:
   - source:
@@ -23,6 +25,8 @@ logger:
     sensor: INFO
 
 api:
+  # No recurring API-triggered resets during a Home Assistant outage.
+  reboot_timeout: 0s
   encryption:
     key: ${test_api_key}
 
@@ -49,8 +53,14 @@ sensor:
         calibration: 0.022
         voltage:
           name: Synthetic Test Voltage
+          force_update: true
+          filters:
+            - timeout: 15s
     ct_clamps:
       - phase_id: phase_a
         input: A
         power:
           name: Synthetic Test Power
+          force_update: true
+          filters:
+            - timeout: 15s

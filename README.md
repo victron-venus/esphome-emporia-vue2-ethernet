@@ -51,7 +51,7 @@ The proposed assignments are GPIO18/SCK, GPIO19/MISO, GPIO25/MOSI, GPIO33/CS and
 
 Read the [hardware design](docs/hardware.md) before selecting a module or changing the board. It covers the pin map, reset behavior, supply requirements, isolation and physical mounting.
 
-**Open reset issue:** the inspected ESP-IDF W5500 driver uses a 100 µs reset pulse, shorter than the device's 500 µs minimum. Reset handling and startup timing need correction and verification before this design can be treated as ready for hardware use.
+**Open reset issue:** the inspected ESP-IDF W5500 driver requests a 100 µs delay while reset is asserted, against a 500 µs minimum in the datasheet. This is a source-level timing gap, not a measurement of the actual pulse or proof that every module fails. Reset handling and startup timing need correction and verification before this design can be treated as ready for hardware use.
 
 ### Signal budget
 
@@ -78,6 +78,8 @@ Polling removes the need for an interrupt line. The preferred design retains an 
 5. **Add the device to Home Assistant.** Verify each circuit's watts, phase, sign, naming and availability before enabling energy calculations.
 6. **Connect selected circuits to Victron.** Map the HA entities through `dbus-emporia-vue`; verify each AC-load service and its disconnect behavior.
 7. **Complete the acceptance tests.** Confirm metering accuracy, thermal behavior, network recovery and the safety of the finished enclosure.
+
+The examples explicitly handle lost measurements: ESPHome timeouts invalidate stalled inputs; Home Assistant checks raw-source freshness and units before integrating power. A numeric value alone is not evidence of a current reading. Keep original ESPHome entities as the GX bridge inputs so derived helpers cannot hide stale timestamps. See [integration failure handling](docs/integrations.md) and [firmware validation](firmware/README.md).
 
 Do not connect USB, UART or an ordinary logic analyzer to a mains-powered Vue. A network connector makes the isolation of the entire assembly a design requirement, including power, magnetics, shielding and enclosure clearances.
 

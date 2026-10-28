@@ -2,6 +2,8 @@
 # Resolve every GPIO against the actual PCB before building device firmware.
 # Preserve the stock SAMD09 firmware and its I2C connection on GPIO21/22.
 # Use this package without wifi: or Wi-Fi-dependent components.
+# The tested IDF driver requests a shorter hardware-reset pulse than W5500
+# specifies. This package does not fix it; see docs/hardware.md before use.
 substitutions:
   eth_clk_pin: GPIO_TBD_CLK
   eth_miso_pin: GPIO_TBD_MISO
