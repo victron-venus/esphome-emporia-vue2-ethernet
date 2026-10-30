@@ -1,5 +1,10 @@
 # Experimental Vue 2 Ethernet firmware packages
 
+After the physical design and device configuration are reviewed, the
+[browser flashing guide](../docs/browser-install.md) explains server-side
+compilation and USB installation without a compiler on the browser computer.
+It does not turn the validation fixtures into deployable firmware.
+
 These packages add W5500 Ethernet to an existing ESPHome configuration for an Emporia Vue 2. They are software building blocks, **not verified hardware designs**. Keep the stock SAMD09 measurement firmware and the existing I2C connection on GPIO21/22.
 
 Use only one package:
