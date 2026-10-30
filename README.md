@@ -12,6 +12,15 @@ This project documents a W5500 Ethernet retrofit, provides ESPHome configuration
 
 ![Local measurement architecture: Vue 2, W5500 Ethernet, Home Assistant and Victron AC loads](docs/assets/architecture.svg)
 
+## Can I install it from a web page?
+
+A reviewed device configuration can be compiled in ESPHome Device Builder and
+written over USB using **[ESPHome Web](https://web.esphome.io/)**, without a local
+Python/PlatformIO installation. Read the [browser flashing guide](docs/browser-install.md).
+This experimental retrofit does **not** yet have a hardware-validated public
+firmware image: GPIO assignment, reset timing, isolation and measurement setup
+must be resolved before flashing. Compiler fixtures are not device firmware.
+
 ## The problem and solution
 
 The Vue 2 has useful whole-installation and circuit-level measurements, but no built-in Ethernet port. A wired local installation needs both an Ethernet controller and firmware support.
