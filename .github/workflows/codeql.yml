@@ -1,0 +1,31 @@
+name: CodeQL
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '47 8 * * 2'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-scan.yml@86c9afca5625a97ef3d69ef10348ccd28a27e0cf
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    with:
+      languages: actions,python
+      force-full: true
+      run-codeql: true
+      run-trivy: false
+      run-dependency-review: false
