@@ -24,7 +24,7 @@ jobs:
       - name: Install documentation parser
         run: >-
           python -m pip install --disable-pip-version-check --require-hashes
-          --only-binary :all: -c requirements-checks.txt -r requirements-checks.lock
+          --only-binary :all: -r requirements-checks.txt
       - name: Check documentation and examples
         run: python scripts/check.py
       - name: Test source validation edge cases
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     container:
-      image: ghcr.io/esphome/esphome:2026.10.0@sha256:1dff19a59070cdb523b76576cdc74d200f862d43c1407809088855920cf57145
+      image: ghcr.io/esphome/esphome:2026.10.1@sha256:eab8cd6b4f51077c3883af4cedc058280ddc34a94f3b2ffee23e9d2cd5f1db64
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

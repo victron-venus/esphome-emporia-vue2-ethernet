@@ -18,7 +18,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parent
-EXPECTED_VERSION = "2026.10.0"
+EXPECTED_VERSION = (ROOT / "requirements.txt").read_text().strip().removeprefix("esphome==")
 PINS = {"clk": 18, "miso": 19, "mosi": 25, "cs": 33}
 VALIDATION_DIRECTORY = "validation"
 FIVE_SIGNAL_FIXTURE = "fixture.yaml"
