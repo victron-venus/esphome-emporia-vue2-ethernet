@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Classify documentation and source changes
         id: scope
-        run: python3 scripts/change_scope.py
+        run: python3 scripts/change_scope.py --documentation-path examples/README.md --documentation-path firmware/README.md
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
