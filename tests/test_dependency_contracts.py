@@ -25,6 +25,6 @@ class DependencyContracts(unittest.TestCase):
 
     def test_firmware_image_matches_local_install_version(self):
         workflow = yaml.safe_load((ROOT / '.github/workflows/validate.yml').read_text())
-        image = workflow['jobs']['firmware']['container']['image']
+        image = workflow['jobs']['firmware-build']['container']['image']
         expected = pins(ROOT / 'firmware/requirements.txt')['esphome']
         self.assertRegex(image, rf'^ghcr\.io/esphome/esphome:{re.escape(expected)}@sha256:[0-9a-f]{{64}}$')
