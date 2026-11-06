@@ -12,12 +12,19 @@ permissions:
 jobs:
   validate:
     name: Documentation and examples
+    outputs:
+      firmware-required: ${{ steps.scope.outputs.run }}
+      scope-reason: ${{ steps.scope.outputs.reason }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
+      - name: Classify documentation and source changes
+        id: scope
+        run: python3 scripts/change_scope.py
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
@@ -32,8 +39,10 @@ jobs:
       - name: Test Home Assistant template edge cases
         run: python -m unittest discover -s examples/tests -v
 
-  firmware:
-    name: ESPHome configuration and generation
+  firmware-build:
+    name: ESPHome configuration and generation (execution)
+    needs: validate
+    if: ${{ needs.validate.outputs.firmware-required == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     container:
@@ -44,3 +53,36 @@ jobs:
           persist-credentials: false
       - name: Validate isolated synthetic configurations
         run: python3 firmware/validate.py
+
+  firmware:
+    name: ESPHome configuration and generation
+    if: ${{ always() }}
+    needs: [validate, firmware-build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify required firmware validation
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          if set(results) != {'validate', 'firmware-build'}:
+              raise SystemExit('Unexpected validation job inventory')
+          validation = results['validate']
+          if validation.get('result') != 'success':
+              raise SystemExit('Documentation and source validation must succeed')
+          outputs = validation.get('outputs', {})
+          required = outputs.get('firmware-required')
+          firmware = results['firmware-build'].get('result')
+          if required == 'true':
+              if firmware != 'success':
+                  raise SystemExit('Firmware validation must succeed')
+          elif required == 'false' and outputs.get('scope-reason') == 'documentation-only':
+              if firmware != 'skipped':
+                  raise SystemExit('Unexpected firmware result for documentation-only change')
+          else:
+              raise SystemExit('Missing or unrecognized change-scope proof')
+          print('Firmware validation requirement satisfied')
+          PY
