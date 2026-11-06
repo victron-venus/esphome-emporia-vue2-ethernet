@@ -21,7 +21,8 @@
   "packageRules": [
     {
       "matchManagers": [
-        "pip_requirements"
+        "pip_requirements",
+        "pip-compile"
       ],
       "matchFileNames": [
         "/^[^/]+$/"
@@ -29,6 +30,46 @@
       "schedule": [
         "* * 1 * *"
       ]
+    },
+    {
+      "description": "Update the exact firmware compiler requirement together with the qualified CI image version.",
+      "matchManagers": [
+        "pip_requirements"
+      ],
+      "matchFileNames": [
+        "firmware/requirements.txt"
+      ],
+      "matchPackageNames": [
+        "esphome"
+      ],
+      "groupName": "ESPHome firmware toolchain",
+      "groupSlug": "esphome-firmware",
+      "groupSingleUpdates": true,
+      "minimumGroupSize": 2,
+      "separateMajorMinor": false,
+      "separateMinorPatch": false,
+      "separateMultipleMajor": false
+    },
+    {
+      "description": "Version upgrades of the firmware image must stay paired with the exact compiler input; digest-only refreshes retain the CI update group.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchFileNames": [
+        ".github/workflows/validate.yml"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/esphome/esphome"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "groupName": "ESPHome firmware toolchain",
+      "groupSlug": "esphome-firmware",
+      "groupSingleUpdates": true,
+      "minimumGroupSize": 2
     }
   ],
   "pip_requirements": {
@@ -49,5 +90,9 @@
     "managerFilePatterns": [
       "/^requirements\\-checks\\.txt$/"
     ]
+  },
+  "vulnerabilityAlerts": {
+    "groupName": "{{#if (and (equals depName \"esphome\") (equals packageFile \"firmware/requirements.txt\"))}}ESPHome firmware toolchain{{else}}{{#if (or (equals manager \"github-actions\") (equals manager \"custom.regex\") (equals manager \"custom.jsonata\"))}}GitHub Actions and reusable workflows{{else}}Security update: {{{depName}}}{{/if}}{{/if}}",
+    "groupSlug": "{{#if (and (equals depName \"esphome\") (equals packageFile \"firmware/requirements.txt\"))}}esphome-firmware{{else}}{{#if (or (equals manager \"github-actions\") (equals manager \"custom.regex\") (equals manager \"custom.jsonata\"))}}ci-workflows{{else}}{{{datasource}}}-{{{depNameSanitized}}}-vulnerability{{/if}}{{/if}}"
   }
 }

@@ -36,3 +36,10 @@ The SVG files in `docs/assets/` are editable source artifacts. Keep text legible
 ## Release boundary
 
 This project publishes documentation and configuration templates. A firmware binary is device-specific and must not be presented as ready to flash while pin assignments, flash size, calibration and electrical constraints remain unverified.
+
+Renovate keeps the exact `firmware/requirements.txt` ESPHome version and the
+`.github/workflows/validate.yml` compiler image version in one firmware-toolchain
+update. Both version changes must be available before that branch is created;
+image digest refreshes stay in the ordinary CI group. The existing firmware
+validator checks that the installed compiler matches the exact input version.
+The root documentation-parser input retains its monthly update schedule.
