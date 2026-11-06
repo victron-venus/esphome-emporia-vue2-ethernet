@@ -23,7 +23,7 @@ The checks reject duplicate YAML/JSON keys, non-finite JSON numbers, cyclic YAML
 
 Regression tests exercise these publication failures and render the actual Home Assistant templates with zero, invalid, stale, future-dated and wrong-unit readings. They do not run Home Assistant itself or prove the behavior of its energy integrator.
 
-The GitHub Actions workflow runs the same checks with read-only repository permissions. Its Python dependencies are pinned with hashes and installed from wheels. The conventional `requirements-checks.in` / `requirements-checks.txt` pair keeps the editable pins separate from the generated, hash-locked install input. Dependency updates must include both files. Regenerate the lock after any dependency change, including removals, with `uv pip compile requirements-checks.in --python-version 3.12 --generate-hashes --only-binary :all: -o requirements-checks.txt`. The source tests reject mismatched pins before publication.
+The GitHub Actions workflow runs the same checks with read-only repository permissions. Its Python dependencies are pinned with hashes and installed from wheels. The conventional `requirements-checks.in` / `requirements-checks.txt` pair keeps the editable pins separate from the generated, hash-locked install input. Dependency updates must include both files. Regenerate the lock after any dependency change, including removals, with `uv pip compile requirements-checks.in --python-version=3.12 --generate-hashes requirements-wheels-only.in --output-file=requirements-checks.txt`. The source tests reject mismatched pins before publication.
 
 A separate job uses the official ESPHome image pinned by its immutable digest and checks both synthetic configurations, generated C++, invalid pin rejection and substitution precedence in temporary directories with throwaway credentials. No pip installation occurs in that job: the pinned ESPHome dependency set includes packages without published wheels. The image currently supplies Python 3.14.6; local full compilation was also checked with Python 3.12. Keep the image version/digest, `firmware/requirements.txt` aligned; the validator reads its expected version from that manifest when updating.
 
@@ -36,3 +36,10 @@ The SVG files in `docs/assets/` are editable source artifacts. Keep text legible
 ## Release boundary
 
 This project publishes documentation and configuration templates. A firmware binary is device-specific and must not be presented as ready to flash while pin assignments, flash size, calibration and electrical constraints remain unverified.
+
+Renovate keeps the exact `firmware/requirements.txt` ESPHome version and the
+`.github/workflows/validate.yml` compiler image version in one firmware-toolchain
+update. Both version changes must be available before that branch is created;
+image digest refreshes stay in the ordinary CI group. The existing firmware
+validator checks that the installed compiler matches the exact input version.
+The root documentation-parser input retains its monthly update schedule.
