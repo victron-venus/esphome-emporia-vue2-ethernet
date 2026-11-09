@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   scan:
-    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-scan.yml@53ec91e4409900013d37a286a1db09d8910772be # main
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/security-scan.yml@d4b21d156067ce58f89f89149bfad545e1889ae7 # main
     permissions:
       contents: read
       actions: read
